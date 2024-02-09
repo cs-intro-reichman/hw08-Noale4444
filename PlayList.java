@@ -35,32 +35,55 @@ class PlayList {
      *  If the list is full, does nothing and returns false.
      *  Otherwise, appends the track and returns true. */
     public boolean add(Track track) {
-        //// replace the following statement with your code
+        if(this.size == this.maxSize) 
+        return false; 
+
+        int size = this.size;
+        this.tracks[size] = track;
+        size++ ; 
         return true;
     }
 
     /** Returns the data of this list, as a string. Each track appears in a separate line. */
     //// For an efficient implementation, use StringBuilder.
     public String toString() {
-        //// replace the following statement with your code
-        return "";
+        String str = ""; 
+        for(int i = 0; i < size; i++) {
+            str += "\n" + this.getTrack(i).toString();
+        }
+        return str;
     }
 
     /** Removes the last track from this list. If the list is empty, does nothing. */
      public void removeLast() {
-        //// replace this comment with your code
-    }
+        int size = this.size; 
+        if( size > 0) { 
+            this.tracks[size-1] = null;
+            size--;  
+
+          }
+        }
     
     /** Returns the total duration (in seconds) of all the tracks in this list.*/
     public int totalDuration() {
-        //// replace the following statement with your code
-        return 0;
+        int sum = 0; 
+        for(int i = 0; i < this.size; i++) { 
+            sum+= this.tracks[i].getDuration(); 
+        } 
+
+        return sum;
     }
 
     /** Returns the index of the track with the given title in this list.
      *  If such a track is not found, returns -1. */
     public int indexOf(String title) {
-        //// replace the following statement with your code
+        int index; 
+        for(int i = 0; i < this.size; i++) { 
+            if(this.tracks[i].getTitle().equals(title)) { 
+                index = i;
+                return index;
+        }
+    } 
         return -1;
     }
 
@@ -71,35 +94,83 @@ class PlayList {
      *  is full, does nothing and returns false. Otherwise, inserts the track and
      *  returns true. */
     public boolean add(int i, Track track) {
-        //// replace the following statement with your code
+
+        if( i >= this.maxSize || this.size == this.maxSize || i < 0) 
         return false;
-    }
-     
+
+        if(this.size == 0){ 
+            this.tracks[0] = track; 
+            this.size = 1;
+            return true; 
+        }
+        if(i == this.size) { 
+            this.tracks[size] = track; 
+            this.size = size+1; 
+            return true;
+        }
+        for(int j = this.size; j > i; j--){
+            this.tracks[j] = this.tracks[j+1];
+        }
+        this.tracks[i] = track; 
+        this.size = size+1;
+        return true; 
+        }
+
+        
+
     /** Removes the track in the given index from this list.
      *  If the list is empty, or the given index is negative or too big for this list, 
      *  does nothing and returns -1. */
     public void remove(int i) {
-        //// replace this comment with your code
+        if( i >= 0 && i < this.size ) { 
+            
+            if(i == this.size -1) 
+            this.removeLast(); 
+
+            else { 
+            for(int j = i; j < this.size; j++) { 
+            this.tracks[j] = this.tracks[j+1]; 
+              
+            }
+           }
+            this.size = size - 1; 
+        } 
     }
 
     /** Removes the first track that has the given title from this list.
      *  If such a track is not found, or the list is empty, or the given index
      *  is negative or too big for this list, does nothing. */
     public void remove(String title) {
-        //// replace this comment with your code
+        if(this.indexOf(title) != -1) { 
+            int index = this.indexOf(title);
+            if(index >=0 && index < this.size)
+            this.remove(index);
+
+        }
     }
 
     /** Removes the first track from this list. If the list is empty, does nothing. */
     public void removeFirst() {
-        //// replace this comment with your code
+      if(this.size > 0 )
+      this.remove(0);
     }
+    
     
     /** Adds all the tracks in the other list to the end of this list. 
      *  If the total size of both lists is too large, does nothing. */
     //// An elegant and terribly inefficient implementation.
      public void add(PlayList other) {
-        //// replace this comment with your code
-    }
+        int size1 = this.size; 
+        int size2 = other.size; 
+        if(size1+size2 <= this.maxSize) { 
+            while(other.size != 0) { 
+                this.add(size, other.getTrack(0)); 
+                other.removeFirst();
+            } 
+
+            }
+        }
+   
 
     /** Returns the index in this list of the track that has the shortest duration,
      *  starting the search in location start. For example, if the durations are 
@@ -108,8 +179,15 @@ class PlayList {
      *  If start is negative or greater than size - 1, returns -1.
      */
     private int minIndex(int start) {
-        //// replace the following statement with your code
-        return 0;
+        if(start < 0 || start > this.size-1) {
+        return -1; 
+        }
+        int index = 0;
+        for(int i = start; i < this.size; i++) { 
+        index = this.tracks[i].isShorterThan(this.tracks[i+1]) ? i : i+1 ; 
+        }
+        
+        return index;
     }
 
     /** Returns the title of the shortest track in this list. 
@@ -123,8 +201,18 @@ class PlayList {
      *  rather than returning a new, sorted playlist, the method sorts
      *  the list on which it was called (this list). */
     public void sortedInPlace() {
-        // Uses the selection sort algorithm,  
-        // calling the minIndex method in each iteration.
-        //// replace this statement with your code
-    }
-}
+
+        for(int i = 0; i < this.size; i++) { 
+            int min = this.minIndex(i); 
+            if(i != min){ 
+                Track temp = this.tracks[i];
+                this.tracks[i] = this.tracks[min];
+                this.tracks[min] = temp;
+            }
+        }
+    }     
+}       
+            
+
+       
+      
