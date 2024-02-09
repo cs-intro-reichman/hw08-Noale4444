@@ -1,3 +1,5 @@
+import javax.sound.midi.Track;
+
 /** Represnts a list of musical tracks. The list has a maximum capacity (int),
  *  and an actual size (number of tracks in the list, an int). */
 class PlayList {
@@ -38,28 +40,29 @@ class PlayList {
         if(this.size == this.maxSize) 
         return false; 
 
-        int size = this.size;
-        this.tracks[size] = track;
-        size++ ; 
+        
+        this.tracks[this.size] = track;
+        this.size = size+1; 
         return true;
     }
 
     /** Returns the data of this list, as a string. Each track appears in a separate line. */
     //// For an efficient implementation, use StringBuilder.
     public String toString() {
-        String str = ""; 
-        for(int i = 0; i < size; i++) {
-            str += "\n" + this.getTrack(i).toString();
-        }
-        return str;
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < size; i++) {
+        builder.append("\n").append(this.getTrack(i).toString());
     }
+    return builder.toString();
+}
+
 
     /** Removes the last track from this list. If the list is empty, does nothing. */
      public void removeLast() {
-        int size = this.size; 
-        if( size > 0) { 
-            this.tracks[size-1] = null;
-            size--;  
+        
+        if( this.size > 0) { 
+            this.tracks[this.size-1] = null;
+            this.size = size-1; 
 
           }
         }
@@ -79,7 +82,7 @@ class PlayList {
     public int indexOf(String title) {
         int index; 
         for(int i = 0; i < this.size; i++) { 
-            if(this.tracks[i].getTitle().equals(title)) { 
+            if(this.tracks[i].getTitle().toLowerCase().equals(title.toLowerCase())) { 
                 index = i;
                 return index;
         }
@@ -108,10 +111,10 @@ class PlayList {
             this.size = size+1; 
             return true;
         }
-        for(int j = this.size; j > i; j--){
+        for(int j = this.size; j >= i; j--){
             this.tracks[j] = this.tracks[j+1];
         }
-        this.tracks[i] = track; 
+         
         this.size = size+1;
         return true; 
         }
@@ -160,11 +163,11 @@ class PlayList {
      *  If the total size of both lists is too large, does nothing. */
     //// An elegant and terribly inefficient implementation.
      public void add(PlayList other) {
-        int size1 = this.size; 
-        int size2 = other.size; 
+        int size1 = this.getSize(); 
+        int size2 = other.getSize(); 
         if(size1+size2 <= this.maxSize) { 
-            while(other.size != 0) { 
-                this.add(size, other.getTrack(0)); 
+            while(other.getSize() > 0) { 
+                this.add(this.size, other.getTrack(0)); 
                 other.removeFirst();
             } 
 
@@ -183,8 +186,11 @@ class PlayList {
         return -1; 
         }
         int index = 0;
-        for(int i = start; i < this.size; i++) { 
-        index = this.tracks[i].isShorterThan(this.tracks[i+1]) ? i : i+1 ; 
+        for(int i = start+1; i < this.size; i++) { 
+        if(this.tracks[i].isShorterThan(this.tracks[index])) {
+            index = i; 
+        }
+
         }
         
         return index;
