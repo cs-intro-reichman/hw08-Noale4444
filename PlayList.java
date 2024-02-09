@@ -40,10 +40,11 @@ class PlayList {
         if(this.size == this.maxSize) 
         return false; 
 
-        
-        this.tracks[this.size] = track;
+        else { 
+        this.tracks[this.getSize()] = track;
         this.size = size+1; 
         return true;
+        }
     }
 
     /** Returns the data of this list, as a string. Each track appears in a separate line. */
