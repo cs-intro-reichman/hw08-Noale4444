@@ -40,11 +40,11 @@ class PlayList {
         if(this.size == this.maxSize) 
         return false; 
 
-        else { 
-        this.tracks[this.getSize()] = track;
+         
+        this.tracks[size] = track;
         this.size = size+1; 
         return true;
-        }
+       
     }
 
     /** Returns the data of this list, as a string. Each track appears in a separate line. */
@@ -62,7 +62,7 @@ class PlayList {
      public void removeLast() {
         
         if( this.size > 0) { 
-            this.tracks[this.size-1] = null;
+            this.tracks[size-1] = null;
             this.size = size-1; 
 
           }
@@ -81,12 +81,14 @@ class PlayList {
     /** Returns the index of the track with the given title in this list.
      *  If such a track is not found, returns -1. */
     public int indexOf(String title) {
-        int index; 
+        
         for(int i = 0; i < this.size; i++) { 
-            if(this.tracks[i].getTitle().toLowerCase().equals(title.toLowerCase())) { 
-                index = i;
-                return index;
-        }
+            if(this.getTrack(i) != null) { 
+              if(this.tracks[i].getTitle().toLowerCase().equals(title.toLowerCase())) 
+                
+                return i;
+        
+      } 
     } 
         return -1;
     }
@@ -99,59 +101,60 @@ class PlayList {
      *  returns true. */
     public boolean add(int i, Track track) {
 
-        if( i >= this.maxSize || this.size == this.maxSize || i < 0) 
-        return false;
-
-        if(this.size == 0){ 
-            this.tracks[0] = track; 
-            this.size = 1;
-            return true; 
-        }
-        if(i == this.size) { 
+       if((i >=0) && (this.getSize() < this.getMaxSize()) && (i<=this.getSize())) { 
+        if(i == this.getSize()) { 
             this.tracks[size] = track; 
             this.size = size+1; 
-            return true;
         }
-        for(int j = this.size; j >= i; j--){
-            this.tracks[j] = this.tracks[j+1];
-        }
-         
-        this.size = size+1;
-        return true; 
-        }
+         else { 
+            for(int j = this.getSize(); j > i; j--) { 
+                this.tracks[j] = this.tracks[j-1];
+            }
+             this.tracks[i] = track; 
+             this.size = size+1; 
+             return true; 
+         }
+        }  
+             return false; 
 
-        
+       }
+       
+
 
     /** Removes the track in the given index from this list.
      *  If the list is empty, or the given index is negative or too big for this list, 
      *  does nothing and returns -1. */
     public void remove(int i) {
-        if( i >= 0 && i < this.size ) { 
-            
-            if(i == this.size -1) 
-            this.removeLast(); 
-
+        if((i >= 0) && (i < this.getSize()) && (this.getSize() != 0)) { 
+            if(i == 0) 
+                this.removeFirst();
+            if(i == this.getSize() -1) 
+                this.removeLast();
             else { 
-            for(int j = i; j < this.size; j++) { 
-            this.tracks[j] = this.tracks[j+1]; 
-              
-            }
-           }
-            this.size = size - 1; 
-        } 
+                for(int j = i; j < this.getSize(); j++) { 
+                    this.tracks[j] = this.tracks[j+1]; 
+                    this.tracks[this.getSize()-2] = null; 
+                    this.size = size-1;
+                }
+            }    
+        }
+
+
+        
     }
 
     /** Removes the first track that has the given title from this list.
      *  If such a track is not found, or the list is empty, or the given index
      *  is negative or too big for this list, does nothing. */
     public void remove(String title) {
-        if(this.indexOf(title) != -1) { 
-            int index = this.indexOf(title);
-            if(index >=0 && index < this.size)
+        int index = this.indexOf(title); 
+        if((this.getSize() != 0) && (index < this.getSize()) && (index >=0)) 
             this.remove(index);
-
         }
-    }
+           
+
+        
+    
 
     /** Removes the first track from this list. If the list is empty, does nothing. */
     public void removeFirst() {
@@ -183,19 +186,19 @@ class PlayList {
      *  If start is negative or greater than size - 1, returns -1.
      */
     private int minIndex(int start) {
-        if(start < 0 || start > this.size-1) {
-        return -1; 
-        }
-        int index = 0;
-        for(int i = start+1; i < this.size; i++) { 
-        if(this.tracks[i].isShorterThan(this.tracks[index])) {
-            index = i; 
-        }
-
+    
+        if((start >=0) && (size < this.getSize())) { 
+             int minIndex = 0;
+               for(int i = start; i < this.getSize(); i++) { 
+                if(this.tracks[i].isShorterThan(this.tracks[minIndex])) { 
+                    minIndex = i; 
+                }
+                    return minIndex; 
+                }
+               return -1;  
+            }
         }
         
-        return index;
-    }
 
     /** Returns the title of the shortest track in this list. 
      *  If the list is empty, returns null. */
