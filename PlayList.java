@@ -1,4 +1,4 @@
-import javax.sound.midi.Track;
+
 
 /** Represnts a list of musical tracks. The list has a maximum capacity (int),
  *  and an actual size (number of tracks in the list, an int). */
@@ -72,6 +72,7 @@ class PlayList {
     public int totalDuration() {
         int sum = 0; 
         for(int i = 0; i < this.size; i++) { 
+            if(this.tracks[i] != null)
             sum+= this.tracks[i].getDuration(); 
         } 
 
@@ -186,9 +187,11 @@ class PlayList {
      *  If start is negative or greater than size - 1, returns -1.
      */
     private int minIndex(int start) {
+        if(this.getSize() == 0 || start < 0 || start >= this.getSize())  
+            return -1;
+        
     
-        if((start >=0) && (size < this.getSize())) { 
-             int minIndex = 0;
+             int minIndex = start;
                for(int i = start; i < this.getSize(); i++) { 
                 if(this.tracks[i].isShorterThan(this.tracks[minIndex])) { 
                     minIndex = i; 
@@ -197,7 +200,7 @@ class PlayList {
                 }
                return -1;  
             }
-        }
+        
         
 
     /** Returns the title of the shortest track in this list. 
@@ -220,8 +223,9 @@ class PlayList {
                 this.tracks[min] = temp;
             }
         }
-    }     
-}       
+    }  
+}   
+      
             
 
        
