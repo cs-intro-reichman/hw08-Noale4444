@@ -187,8 +187,8 @@ class PlayList {
      *  If start is negative or greater than size - 1, returns -1.
      */
     private int minIndex(int start) {
-        
-        if(this.getSize() == 0 || start < 0 || start >= this.getSize())  
+
+        if(start < 0 || start > this.getSize()-1)  
             return -1;
         
     
