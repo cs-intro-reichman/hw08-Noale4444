@@ -175,6 +175,7 @@ class PlayList {
                 this.add(other.getTrack(i));
             }
             other.clear();
+            this.size = size1+size2; 
                } 
 
             }
