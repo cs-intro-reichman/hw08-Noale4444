@@ -71,10 +71,11 @@ class PlayList {
     /** Returns the total duration (in seconds) of all the tracks in this list.*/
     public int totalDuration() {
         int sum = 0; 
-        for(int i = 0; i < this.size; i++) { 
-            if(this.tracks[i] != null)
-            sum+= this.tracks[i].getDuration(); 
+        for(int i = 0; i < this.getSize(); i++) { 
+            if(this.getTrack(i) != null){
+            sum+= this.getTrack(i).getDuration(); 
         } 
+    } 
 
         return sum;
     }
@@ -172,10 +173,12 @@ class PlayList {
         int size2 = other.getSize(); 
         if(size1+size2 <= this.maxSize) { 
             for(int i = 0; i < other.size; i++) { 
+                 if(other.getTrack(i) != null) { 
                 this.add(other.getTrack(i));
             }
+        }  
             other.clear();
-            this.size = size1+size2; 
+            
                } 
 
             }
