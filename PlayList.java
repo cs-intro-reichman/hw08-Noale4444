@@ -171,13 +171,21 @@ class PlayList {
         int size1 = this.getSize(); 
         int size2 = other.getSize(); 
         if(size1+size2 <= this.maxSize) { 
-            while(other.getSize() > 0) { 
-                this.add(this.size, other.getTrack(0)); 
-                other.removeFirst();
-            } 
+            for(int i = 0; i < other.size; i++) { 
+                this.add(other.getTrack(i));
+            }
+            other.clear();
+               } 
 
             }
-        }
+
+            public void clear() { 
+                for(int i = 0; i < this.size; i++) {
+                    this.tracks[i] = null;
+                }
+                this.size = 0; 
+            }
+        
    
 
     /** Returns the index in this list of the track that has the shortest duration,
