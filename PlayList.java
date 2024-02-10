@@ -194,10 +194,12 @@ class PlayList {
     
              int minIndex = start;
                for(int i = start; i < this.getSize(); i++) { 
-                if(this.tracks[i].isShorterThan(this.tracks[minIndex])) { 
-                    minIndex = i; 
+                  if(this.tracks[i] != null){
+                      if(this.tracks[i].isShorterThan(this.tracks[minIndex])) { 
+                            minIndex = i; 
                 }
             }  
+        }   
                     return minIndex; 
                 }
                
