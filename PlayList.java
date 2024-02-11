@@ -1,5 +1,4 @@
 
-
 /** Represnts a list of musical tracks. The list has a maximum capacity (int),
  *  and an actual size (number of tracks in the list, an int). */
 class PlayList {
@@ -132,17 +131,15 @@ class PlayList {
                 this.removeFirst();
             if(i == this.getSize() -1) 
                 this.removeLast();
-            else { 
-                for(int j = i; j < this.getSize(); j++) { 
-                    this.tracks[j] = this.tracks[j+1]; 
-                    this.tracks[this.getSize()-2] = null; 
-                    this.size = size-1;
+            
+                     else {
+                for (int j = i; j < this.getSize(); j++) {
+                    this.tracks[j] = this.tracks[j + 1];
                 }
-            }    
+            } 
+                this.size = size - 1;
         }
-
-
-        
+ 
     }
 
     /** Removes the first track that has the given title from this list.
@@ -168,28 +165,16 @@ class PlayList {
     /** Adds all the tracks in the other list to the end of this list. 
      *  If the total size of both lists is too large, does nothing. */
     //// An elegant and terribly inefficient implementation.
-     public void add(PlayList other) {
-        int size1 = this.getSize(); 
-        int size2 = other.getSize(); 
-        if(size1+size2 <= this.maxSize) { 
-            for(int i = 0; i < other.size; i++) { 
-                 if(other.getTrack(i) != null) { 
-                this.add(other.getTrack(i));
-            }
-        }  
-            other.clear();
+    public void add(PlayList other) {
+        if (this.getSize() + other.getSize() <= this.getMaxSize()) {
+            while (other.size != 0)
+                this.add(other.tracks[0]);
+            other.removeFirst();
+            ;
+        }
+    }
+
             
-               } 
-
-            }
-
-            public void clear() { 
-                for(int i = 0; i < this.size; i++) {
-                    this.tracks[i] = null;
-                }
-                this.size = 0; 
-            }
-        
    
 
     /** Returns the index in this list of the track that has the shortest duration,
