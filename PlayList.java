@@ -70,7 +70,9 @@ class PlayList {
     /** Returns the total duration (in seconds) of all the tracks in this list.*/
     public int totalDuration() {
         int sum = 0; 
+        // #feedback - note that you call access size directly instead of using the getSize method.
         for(int i = 0; i < this.getSize(); i++) { 
+            // #feedback - same, can access with tracks[i].
             if(this.getTrack(i) != null){
             sum+= this.getTrack(i).getDuration(); 
         } 
@@ -102,6 +104,7 @@ class PlayList {
      *  returns true. */
     public boolean add(int i, Track track) {
 
+        // #feedback - please write with the correct indentation to make the code more readable.
        if((i >=0) && (this.getSize() < this.getMaxSize()) && (i<=this.getSize())) { 
         if(i == this.getSize()) { 
             this.tracks[size] = track; 
@@ -144,6 +147,7 @@ class PlayList {
      *  is negative or too big for this list, does nothing. */
     public void remove(String title) {
         int index = this.indexOf(title); 
+        // #feedback - checking the size and that the index is inside the array bounds is not needed, it is already done in indexOf.
         if((this.getSize() != 0) && (index < this.getSize()) && (index >=0)) 
             this.remove(index);
         }
@@ -164,6 +168,7 @@ class PlayList {
     //// An elegant and terribly inefficient implementation.
     public void add(PlayList other) {
         if (this.getSize() + other.getSize() <= this.getMaxSize()) {
+            // #feedback - while the code below works, it changes "other" object, which is not expected. You can just iterate on the "other" tracks and add them without calling to remove.
             while (other.size != 0)
                 this.add(other.tracks[0]);
             other.removeFirst();
